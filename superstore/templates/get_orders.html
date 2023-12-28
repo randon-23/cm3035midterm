@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Orders</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Ship Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                {% if update %}
+                <tr>
+                    <td><a href="/update_ship_date_form_view/{{ order.order_id }}">{{ order.order_id }}</a></td>
+                    <td>{{ order.order_date }}</td>
+                    <td>{{ order.ship_date }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td><a href="/get_orders/{{ order.order_id }}">{{ order.order_id }}</a></td>
+                    <td>{{ order.order_date }}</td>
+                    <td></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?update={{ update }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?update={{ update }}&page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+{% endblock %}

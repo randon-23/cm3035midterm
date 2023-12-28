@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Filtered Products</h2>
+        {% if products %}
+        <table>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Info</th>
+                <th>Category</th>
+                <th>Sub Category</th>
+                <th>Unit Price</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.product_id }}</td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_info }}</td>
+                <td>{{ product.product_category }}</td>
+                <td>{{ product.product_sub_category }}</td>
+                <td>{{ product.product_unit_price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No products found.</p>
+        {% endif %}
+{% endblock %}

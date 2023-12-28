@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+        <h2>Create New Order</h2>
+        <a href="{% url 'create_order_view' %}">POST: Create Order - add as many OrderDetails (items) to the order as you want, then select Shipping Mode and Customer, and click Create Order</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8080/api/create_order">http://localhost:8000/api/create_order</a>
+        <br>
+        <h2>Get Order Details</h2>
+        <a href="{% url 'get_orders_api' %}">GET: Get Orders - select order which you would like to see details of, click on the hyperlink to return all OrderDetails as well as a Order Grand Total</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8000/api/get_orders/CA-2016-152156">http://localhost:8000/api/get_orders/CA-2016-152156</a>
+        <br>
+        <h2>Filter Products</h2>
+        <a href="{% url 'get_filter_products_form_view' %}">GET: Filter Products - filter products based on Product Category, Subcategory, or Unit Price (greater than, less than, equals)</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8000/api/get_filter_products/?product_category=Furniture">http://localhost:8000/api/get_filter_products/?product_category=Furniture</a>
+        <br>
+        <h2>Revenue by Location Selection</h2>
+        <a href="{% url 'get_revenue_location_form_view' %}">GET: Revenue by Location - Select one type of location field (region, state, city or zip_code) to retrieve Total Revenue earned by orders from the requested region</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8000/api/get_revenue_location/?city=Seattle">http://localhost:8000/api/get_revenue_location/?city=Seattle</a>
+        <br>
+        <h2>Get Customer Purchase History</h2>
+        <a href="{% url 'get_customers_api' %}">GET: Get Customers - select customer which you would like to see all orders' history of, click on hyperlink to return all Orders</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8000/api/get_customer_orders/ZD-21925">http://localhost:8000/api/get_customer_orders/ZD-21925</a>
+        <br>
+        <h2>Update Order Ship Date</h2>
+        <a href="{% url 'get_orders_api' %}?update=true">POST/PATCH: Update Order - Select Order from list of orders, then enter ship date and click Update - verify by reloading this hyperlink</a>
+        <h4>Direct endpoint access</h4>
+        <a href="http://localhost:8000/api/update_ship_date_api/CA-2016-152156">http://localhost:8000/api/update_ship_date_api/CA-2016-152156</a>
+{% endblock %}

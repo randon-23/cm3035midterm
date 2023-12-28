@@ -1,0 +1,8 @@
+{% extends "base.html"%}
+{% block content %}
+<h2>Location Selection</h2>
+<form id="locationForm" action="{% url 'get_revenue_location_view' %}" method="get">
+    {{ locations_form.as_p}}
+    <button type="submit" formnovalidate>Get All Orders and Total Revenue</button>
+</form>
+{% endblock %}

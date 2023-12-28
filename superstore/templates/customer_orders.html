@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Customer Details</h2>
+<p><strong>Customer ID:</strong> {{ orders.0.customer.customer_id }}</p>
+<p><strong>Customer Name:</strong> {{ orders.0.customer.customer_first_name }}</p>
+<p><strong>Customer Surname:</strong> {{ orders.0.customer.customer_last_name }}</p>
+<p><strong>Customer Segment:</strong> {{ orders.0.customer.customer_segment }}</p>
+
+<h2>Orders</h2>
+{% for order in orders %}
+    <div class="order-info">
+        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Price</th>
+                <th>Quantity</th>
+                <th>Discount</th>
+                <th>Total After Discount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in order.order_details %}
+            <tr>
+                <td>{{ detail.product_name }}</td>
+                <td>{{ detail.price_at_sale }}</td>
+                <td>{{ detail.quantity }}</td>
+                <td>{{ detail.discount }}</td>
+                <td>{{ detail.total_after_discount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Create New Order</h2>
+    <p>Use product and quantity to add items to the order, then when you have all, choose shipping mode and Customer to create the order</p>
+    <form id="orderForm" action="/api/create_order/" method="POST">
+        {% csrf_token %}
+        <div id="orderDetailsForm">
+            {{ order_details_form.as_p}}
+        </div>
+        <button type="button" id="addOrderDetail">Add to Order</button>
+        {{ order_form.as_p }}
+        <button type="submit" formnovalidate>Create Order</button>
+    </form>
+
+    <div class="order-info"></div>
+    
+    <h2>Order Details</h2>
+    <p>Items currently chosen for this order</p>
+    <table id="orderDetailsDisplay">
+        <tr>
+            <th>Product</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+        </tr>
+    </table>
+    
+    <script>
+        // Storing the order details data
+        var orderDetailsData = [];
+
+        // Add an event listener to the "Add to Order" button
+        document.getElementById('addOrderDetail').addEventListener('click', function() {
+            function splitAtNth(str, separator, index) {
+                var parts = str.split(separator);
+                if (parts.length <= index) {
+                    return parts.join(separator);
+                }
+                return parts.slice(0, index).join(separator) + separator + parts.slice(index).join(separator);
+            }
+
+            var orderDetailsForm = document.getElementById('orderDetailsForm');
+
+            var productInput = orderDetailsForm.querySelector('[name="product"]');
+            var quantityInput = orderDetailsForm.querySelector('[name="quantity"]');
+
+            //getting name of product
+            var selectedOption = productInput.options[productInput.selectedIndex];
+            var productParts = splitAtNth(selectedOption.text, '-', 3);
+            
+            if (productInput && quantityInput) {
+                var orderDetail = {
+                    'product': productInput.value,
+                    'product_name': productParts.split(' - ')[1],
+                    'quantity': quantityInput.value
+                };
+
+                orderDetailsData.push(orderDetail);
+                console.log(orderDetailsData);
+
+                // Reset order details form fields
+                productInput.value = '';
+                quantityInput.value = '';
+
+                var orderDetailsDisplay = document.getElementById('orderDetailsDisplay');
+                var newRow = orderDetailsDisplay.insertRow(-1);
+                var productIdCell = newRow.insertCell(0);
+                var productNameCell = newRow.insertCell(1);
+                var quantityCell = newRow.insertCell(2);
+                productIdCell.textContent = orderDetail.product;
+                productNameCell.textContent = orderDetail.product_name;
+                quantityCell.textContent = orderDetail.quantity;
+
+            } else {
+                console.error("Product or Quantity input not found");
+            }
+        });
+
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var orderData = {
+                'customer': document.getElementById('id_customer').value,
+                'ship_mode': document.getElementById('id_ship_mode').value,
+                'order_details': orderDetailsData
+            };
+
+            console.log(orderData)
+
+            //API call to create order with orderData upon submit
+            fetch('/api/create_order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify(orderData)
+            }).then(function(response) {
+                if (response.ok) {
+                    alert('Order created successfully');
+                    orderDetailsData = [];
+                    location.reload();
+                } else {
+                    alert('Error creating order');
+                }
+            });
+        });
+    </script>
+{% endblock %}

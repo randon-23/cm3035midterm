@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Update Ship Date</h2>
+<form id="updateShipDateForm" action ="{% url 'update_ship_date_api' order_id=order_id %}" method="POST">
+    {% csrf_token %}
+    {{ ship_date_form.as_p }}
+    <button type="submit">Update Ship Date</button>
+</form>
+
+<script>
+    document.getElementById('updateShipDateForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        var formData = new FormData(this);
+    
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(function(response){
+            if (response.status === 200) {
+                alert('Ship date updated successfully');
+                window.location.href = "{% url 'index' %}";
+            } else {
+                alert('Error creating order');
+            }
+        })
+    });
+    </script>
+{% endblock %}

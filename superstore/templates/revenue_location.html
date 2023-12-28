@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Orders in chosen location and Total Revenue</h2>
+    {% if results.orders %}
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Customer</th>
+            </tr>
+            {% for order in results.orders %}
+            <tr>
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.customer.customer_id }} - {{ order.customer.customer_first_name }} {{ order.customer.customer_last_name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h3>Total Revenue: {{ results.total_revenue }}</h3>
+    {% else %}
+        <p>{{ results.error }}</p>
+    {% endif %}
+{% endblock %}

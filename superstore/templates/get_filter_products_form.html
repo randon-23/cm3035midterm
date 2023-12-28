@@ -1,0 +1,10 @@
+{% extends "base.html"%}
+{% block content %}
+<h2>Filter Products</h2>
+<form id="filterForm" action="{% url 'get_filtered_products_view' %}" method="GET">
+    <div id="filterDetailsForm">
+        {{ filter_products_form.as_p}}
+    </div>
+    <button type="submit" formnovalidate>Filter Products</button>
+</form>
+{% endblock %}
